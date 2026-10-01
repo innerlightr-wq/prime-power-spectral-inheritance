@@ -21,6 +21,10 @@ keywords:
   - Wieferich primes
   - equidistribution
   - affine cocycles
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23088511"
+    description: "Zenodo archive of the manuscript (paper/)"
 preferred-citation:
   type: report
   title: "Exact Spectral Inheritance in Prime-Power Resolution Towers: A Splitting Theorem for Affine-Cocycle Transfer Operators, with Application to the Collatz Carry Sum"
@@ -30,4 +34,6 @@ preferred-citation:
       orcid: "https://orcid.org/0009-0007-0190-9143"
   date-released: 2026-10-01
   license: CC-BY-4.0
+  doi: "10.5281/zenodo.23088511"
+  url: "https://doi.org/10.5281/zenodo.23088511"
   notes: "The manuscript (paper/) is licensed under CC BY 4.0; the accompanying verification code (src/) is licensed separately under Apache-2.0, per the repository's top-level license field above."

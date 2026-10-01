@@ -1,8 +1,12 @@
 # prime-power-spectral-inheritance
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23088511.svg)](https://doi.org/10.5281/zenodo.23088511)
+
 **Exact spectral inheritance in prime-power resolution towers: a splitting theorem for affine-cocycle transfer operators, with application to the Collatz carry sum.**
 
 Elias De Jesús · Independent Researcher · ORCID [0009-0007-0190-9143](https://orcid.org/0009-0007-0190-9143) · `dejesuselias10@gmail.com`
+
+Manuscript archived on Zenodo: De Jesús, E. (2026). *Exact Spectral Inheritance in Prime-Power Resolution Towers: A Splitting Theorem for Affine-Cocycle Transfer Operators, with Application to the Collatz Carry Sum.* Zenodo. [https://doi.org/10.5281/zenodo.23088511](https://doi.org/10.5281/zenodo.23088511)
 
 ## What this is
 
@@ -61,4 +65,4 @@ This repository is dual-licensed, matching the author's standard convention for 
 - **Manuscript** (`paper/main.tex`, `paper/main.pdf`): [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0) — see `paper/LICENSE`.
 - **Code** (`src/`, and the repository infrastructure generally): [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) — see `LICENSE`.
 
-Please cite via `CITATION.cff`. The manuscript is additionally deposited on Zenodo; the DOI will be added here and to `CITATION.cff` once assigned.
+Please cite via `CITATION.cff`. The manuscript is additionally archived on Zenodo: [doi.org/10.5281/zenodo.23088511](https://doi.org/10.5281/zenodo.23088511).
