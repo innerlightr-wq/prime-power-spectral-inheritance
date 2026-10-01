@@ -1,19 +1,25 @@
 """
 independent_reimplementation.py — a SEPARATE, from-scratch implementation
 (deliberately not importing operator_lib.py) of the operator construction,
-used to back the specific claims made in paper/main.tex, Section 5
-("Numerical verification"):
+checking p=5,11,13 with (a,b)=(3,2) at the Collatz saddle x_* (including
+the non-primitive lift t=5 at e=2->3 for p=5) and p=7,13 with the control
+pair (a,b)=(5,2) at x=0.37.
 
-    "An independent re-implementation ... reproduced (i)-(iii) for
-     p=5,11,13 with (a,b)=(3,2) at x_* (including the non-primitive lift
-     t=5 at e=2->3 for p=5) and (v) for p=7,13 with (a,b)=(5,2) at x=0.37;
-     all intertwining and off-diagonal residuals were below 2e-14 and the
-     spectral radii agreed to ten digits."
+This predates, and is independent of, the removal of hypothesis (H1) in
+the current version of paper/main.tex (see docs/theorem-audit.md, Stage
+5) -- it was written to back a specific sentence in an earlier revision
+of the paper's "Numerical verification" section. The current paper's
+"Earlier checks" paragraph in that section still references this result
+in general terms ("exact sympy and high-precision linear algebra at
+p=5,13 ... is consistent with all of the above"), but no longer quotes it
+verbatim. The script's own findings remain correct and are kept as
+additional corroboration; see unconditional_splitting_check.py and
+large_sweep_corroboration.py for verification of the current,
+unconditional theorems specifically.
 
 This script builds M_t(x) directly from Definition 1 using only dense
 numpy, with its own group-generation and order routines, and reports the
-exact residuals and digit-agreement so the claim above can be checked
-against real numbers, not just asserted in prose.
+exact residuals and digit-agreement.
 """
 import numpy as np
 from math import log2, gcd
