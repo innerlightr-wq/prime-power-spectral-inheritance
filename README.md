@@ -25,8 +25,8 @@ See `paper/main.tex` / `paper/main.pdf` for the full statements and proofs, `doc
 ## Repository layout
 
 ```
-paper/        main.tex, main.pdf  — the technical note (self-contained inline bibliography)
-src/          verification scripts (exact/symbolic + numerical), all reproducible
+paper/        main.tex, main.pdf, LICENSE (CC BY 4.0)  — the technical note (self-contained inline bibliography)
+src/          verification scripts (exact/symbolic + numerical), all reproducible — Apache 2.0
 docs/         theorem-audit.md, computational-notes.md, exceptional-primes.md
 ```
 
@@ -49,4 +49,8 @@ This note is about the statistical/spectral structure of the carry-sum residue s
 
 ## License
 
-Apache License 2.0 — see `LICENSE`. Please cite via `CITATION.cff`.
+This repository is dual-licensed, matching the author's standard convention for software-plus-manuscript deposits:
+- **Manuscript** (`paper/main.tex`, `paper/main.pdf`): [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0) — see `paper/LICENSE`.
+- **Code** (`src/`, and the repository infrastructure generally): [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) — see `LICENSE`.
+
+Please cite via `CITATION.cff`. The manuscript is additionally deposited on Zenodo; the DOI will be added here and to `CITATION.cff` once assigned.

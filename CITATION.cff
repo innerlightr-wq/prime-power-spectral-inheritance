@@ -8,6 +8,9 @@ authors:
     orcid: "https://orcid.org/0009-0007-0190-9143"
     email: "dejesuselias10@gmail.com"
 date-released: 2026-10-01
+# license applies to the software/repository as a whole (src/); the manuscript
+# under paper/ is licensed separately under CC BY 4.0 -- see preferred-citation
+# below and paper/LICENSE.
 license: Apache-2.0
 version: "1.0.0"
 keywords:
@@ -26,3 +29,5 @@ preferred-citation:
       given-names: "Elias"
       orcid: "https://orcid.org/0009-0007-0190-9143"
   date-released: 2026-10-01
+  license: CC-BY-4.0
+  notes: "The manuscript (paper/) is licensed under CC BY 4.0; the accompanying verification code (src/) is licensed separately under Apache-2.0, per the repository's top-level license field above."
