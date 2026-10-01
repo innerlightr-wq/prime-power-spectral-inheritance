@@ -1,178 +1,307 @@
-\documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb, amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{booktabs}
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[expansion=false]{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\providecommand{\doi}[1]{\href{https://doi.org/#1}{doi:#1}}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{remark}[theorem]{Remark}
 \newtheorem{openproblem}[theorem]{Open Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
 
-\title{\textbf{Exact Spectral Inheritance in Prime-Power Resolution Towers:\\
-A Splitting Theorem for Affine-Cocycle Transfer Operators,\\
-with Application to the Collatz Carry Sum}}
-\author{Elias De Jesús\\ Independent Researcher \\ ORCID: 0009-0007-0190-9143 \\ \texttt{dejesuselias10@gmail.com}}
-\date{Draft, October 2026 \\ License: Apache License 2.0}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Spec}{\operatorname{Spec}}
+
+\hypersetup{
+  pdftitle={Exact Spectral Inheritance in Prime-Power Resolution Towers},
+  pdfauthor={Elias De Jes\'us},
+  pdfkeywords={transfer operator, spectral gap, Collatz, prime-power tower, Wieferich prime, equidistribution}
+}
+
+\title{\textbf{Exact Spectral Inheritance in\\ Prime-Power Resolution Towers}\\[2pt]
+\large A Splitting Theorem for Affine-Cocycle Transfer Operators,\\
+with Application to the Collatz Carry Sum}
+\author{Elias De Jes\'us\\[2pt]
+\small Independent Researcher\\
+\small ORCID: \href{https://orcid.org/0009-0007-0190-9143}{0009-0007-0190-9143}\quad
+\href{mailto:dejesuselias10@gmail.com}{dejesuselias10@gmail.com}}
+\date{Technical note, Version 1.0 --- October 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-For a prime power $q=p^e$, the accelerated Collatz carry sum generates a multiplicative walk on $K_e=\langle 2,3\rangle\le(\mathbb Z/q\mathbb Z)^\times$ and an associated family of phase-twisted transfer operators $\mathcal L_{e,t,x}$, whose dominant twisted eigenvalue controls the rate of equidistribution of carry-sum residues at fixed $p$ (prior work: \textit{Fixed-Prime Equidistribution of Accelerated Collatz Carry Sums}). This note settles the natural follow-up question — how this spectral picture behaves as the resolution $e$ is refined — by proving an exact structural theorem for the whole tower $(\mathcal L_e)_{e\ge1}$. We show that the natural pullback $J_e:\mathcal H_e\to\mathcal H_{e+1}$ along the reduction $\pi_e:K_{e+1}\to K_e$ not only intertwines the operators ($\mathcal L_{e+1}J_e=J_e\mathcal L_e$, under a single generic hypothesis on the multiplicative order of $2$) but that its image is a \emph{reducing}, not merely invariant, subspace: the orthogonal complement $Z_{e+1}$ (functions of zero sum on every fiber of $\pi_e$) is \emph{also} exactly invariant, giving an orthogonal direct-sum splitting $\mathcal L_{e+1}\cong\mathcal L_e\oplus\mathcal N_{e+1}$. This is strictly stronger than the block-upper-triangular structure a bare invariant subspace would give, and it has an immediate consequence that a weaker structural statement could not deliver: the spectral-gap quantity governing equidistribution, $g_0(p,e)$, is \emph{unconditionally non-increasing} in $e$ — resolving, in the monotone-and-convergent direction, an open question raised by preliminary numerical data that had suggested (incorrectly, as it turns out) an ongoing decay. We identify exactly which arithmetic hypothesis the theorem needs (generic multiplicative-order lifting of the base $2$), verify it fails at a concrete, named prime (a Wieferich prime base $2$), and give a precise account of why a \emph{different} arithmetic anomaly at a different prime (Wieferich base $3$) perturbs the spectral data without threatening the theorem's hypothesis at all. The theorem and its proof are stated for a general affine-cocycle operator family, not specifically for the Collatz instance; what remains open is a sharper, correctly-isolated question about whether finer, stratum-local spectral dominance always holds, which is not needed for the monotonicity result itself.
+For a prime power $q=p^e$, the accelerated Collatz carry sum generates a multiplicative walk on $K_e=\langle 2,3\rangle\le(\Z/q\Z)^\times$ and an associated family of phase-twisted transfer operators $L_{e,t,x}$, whose dominant twisted eigenvalue controls the rate of equidistribution of carry-sum residues at fixed $p$~\cite{DJ-fixedprime}. This note settles how this spectral picture behaves as the resolution $e$ is refined, by proving an exact structural theorem for the whole tower $(L_e)_{e\ge1}$. We show that the natural pullback $J_e:H_e\to H_{e+1}$ along the reduction $\pi_e:K_{e+1}\to K_e$ not only intertwines the operators ($L_{e+1}J_e=J_eL_e$, under a single hypothesis on the multiplicative order of $2$), but that its image is a \emph{reducing}, not merely invariant, subspace: the orthogonal complement $Z_{e+1}$ (functions of zero sum on every fiber of $\pi_e$) is also exactly invariant, giving an orthogonal direct-sum splitting $L_{e+1}\cong L_e\oplus N_{e+1}$. This is strictly stronger than the block-upper-triangular structure a bare invariant subspace would give, and it has an immediate consequence: the spectral-gap quantity $g_0(p,e)$ governing equidistribution is non-increasing in $e$ at every step where the hypothesis holds. By the lifting-the-exponent lemma the hypothesis holds at every step $e\ge w_p(2)$, where $w_p(2)=v_p(2^{p-1}-1)$, so $g_0(p,\cdot)$ is eventually monotone and convergent for every prime $p\nmid 6$, and monotone from $e=1$ for every non-Wieferich prime. This resolves, in the monotone-and-convergent direction, an open question raised by preliminary numerical data that had suggested an ongoing decay. We verify that the hypothesis fails at a concrete prime (the Wieferich prime $1093$, base~2, at the single step $e=1\to2$), and explain why a different anomaly (the base-3 Wieferich prime $11$) perturbs the spectral data without touching the hypothesis. The theorem and its proof are stated for a general affine-cocycle operator family; the Collatz carry sum is the motivating instance, not a hypothesis.
 \end{abstract}
 
-\begin{center}
-\fbox{\begin{minipage}{0.92\textwidth}
-\textbf{Scope of claims.} \emph{Proved here, generically (Theorems~\ref{thm:intertwine}, \ref{thm:split}, \ref{thm:monotone}):} the intertwining identity; the exact orthogonal splitting; monotonicity and convergence of $g_0(p,e)$. \emph{Proved here, number-theoretically (Prop.~\ref{prop:wieferich}):} the equivalence of the Fermat-quotient and order-stall forms of the Wieferich condition, and its exact role in the hypothesis. \emph{Verified computationally (exact/symbolic, small cases):} the splitting identity and the eigenvalue-union formula, for several primes and a non-Collatz control multiplier. \emph{Explicitly open:} whether a non-primitive stratum's new-sector operator can ever exceed its own local inherited eigenvalue (Open Problem~\ref{op:dominance}); whether the limit of $g_0(p,e)$ is strictly positive. \emph{Not claimed:} anything about Collatz cycle closure, divergence, or the Collatz conjecture — this note is purely about the statistical/spectral structure of the carry-sum residue system.
-\end{minipage}}
-\end{center}
+\medskip
+\noindent\textbf{Keywords:} transfer operators; spectral gap; prime-power towers; reducing subspaces; Wieferich primes; accelerated Collatz map; equidistribution.\\
+\textbf{MSC 2020:} 11B83 (primary); 37A30, 47A15, 11A07 (secondary).
+
+\bigskip
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\small
+\textbf{Scope of claims.}
+\emph{Proved here, generically} (Theorems~\ref{thm:intertwine}, \ref{thm:split}, \ref{thm:mono}): the intertwining identity; the exact orthogonal splitting; monotonicity and convergence of $g_0(p,e)$ at every step satisfying (H1).
+\emph{Proved here, number-theoretically} (Propositions~\ref{prop:wieferich}, \ref{prop:lte}): the equivalence of the Fermat-quotient and order-stall forms of the Wieferich condition, and the exact set of steps at which (H1) holds.
+\emph{Verified computationally} (exact/high-precision, small cases): the splitting identity and the eigenvalue-union formula, for several primes and a non-Collatz control multiplier.
+\emph{Explicitly open:} whether a non-primitive stratum's new-sector operator can ever exceed its own inherited eigenvalue (Open Problem~\ref{op:local}); whether $\lim_e g_0(p,e)$ is strictly positive.
+\emph{Not claimed:} anything about Collatz cycle closure, divergence, or the Collatz conjecture. This note is purely about the statistical/spectral structure of the carry-sum residue system.}}
 
 \section{Introduction}
 
-\textit{Fixed-Prime Equidistribution of Accelerated Collatz Carry Sums} \cite{equidist} proves that, for the accelerated Collatz carry sum $C_L(D)=\sum_{j<L}3^{L-1-j}2^{s_j}$ over valuation words $D$, the residue $C_L(D)\bmod p$ equidistributes as $L\to\infty$, for every fixed prime $p\nmid6$, at an explicit geometric rate governed by a transfer-operator spectral gap $g_0(p)$. The companion instrument \textit{amgap} \cite{amgap} extends the construction to prime powers $q=p^e$ and reports two data points suggesting the gap might shrink with $e$: $g_0(11,1)=0.3340$, $g_0(11,2)=0.3225$, explicitly flagging the question of whether $g_0(p,e)\to0$ as $e\to\infty$ as open.
+The $3x+1$ problem and its accelerated (Syracuse) form have a long literature on the statistical behaviour of iterates and their residues; see Lagarias~\cite{Lagarias1985,Lagarias2010} for surveys and Tao~\cite{Tao2022} for the strongest current results on equidistribution of Syracuse random variables modulo powers of $3$.
 
-A preliminary numerical extension (unpublished working notes) computed $g_0(11,3)\approx0.305$, apparently continuing the downward trend, and an initial structural analysis of the prime-power tower proposed a recursion $B_p(e)=\max\{P_p(e),B_p(e-1)\}$ (with $P_p(e)$ the dominant primitive-stratum eigenvalue and $B_p(e)$ the overall gap-defining quantity) based on an embedding of lower-level spectra into higher levels. On audit, that recursion was found to rest on an unproved assumption — that an embedded (``inherited'') eigenvalue remains globally dominant within its own stratum — and the monotonicity conclusion was downgraded to conditional.
+\emph{Fixed-Prime Equidistribution of Accelerated Collatz Carry Sums}~\cite{DJ-fixedprime} proves that, for the accelerated Collatz carry sum $C_L(D)=\sum_{j<L}3^{L-1-j}2^{s_j}$ over valuation words $D$, the residue $C_L(D)\bmod p$ equidistributes as $L\to\infty$, for every fixed prime $p\nmid 6$, at an explicit geometric rate governed by a transfer-operator spectral gap $g_0(p)$ (transfer operators in this sense are the standard tool of thermodynamic formalism; see Baladi~\cite{Baladi2000}). The companion instrument \texttt{amgap}~\cite{DJ-amgap} extends the construction to prime powers $q=p^e$ and reports two data points suggesting the gap might shrink with $e$: $g_0(11,1)=0.3340$, $g_0(11,2)=0.3225$, explicitly flagging whether $g_0(p,e)\to0$ as $e\to\infty$ as open.
 
-This note resolves the question. The key missing structural fact is that the natural reduction map's pullback is not merely order-preserving (an invariant subspace) but \emph{splits} the operator as an honest orthogonal direct sum. This upgrades the available inequality to an exact formula, from which unconditional monotonicity follows by a short, elementary argument (Theorem~\ref{thm:monotone}). We also locate, precisely, the one arithmetic hypothesis the whole tower construction needs (Section~\ref{sec:anomalies}), and the one concrete prime where it is known to fail.
+A preliminary numerical extension (unpublished working notes) computed $g_0(11,3)\approx0.305$, apparently continuing the downward trend, and an initial structural analysis of the prime-power tower proposed a recursion $B_p(e)=\max\{P_p(e),B_p(e-1)\}$ (with $P_p(e)$ the dominant primitive-stratum eigenvalue and $B_p(e)$ the overall gap-defining quantity), based on an embedding of lower-level spectra into higher levels. On audit, that recursion was found to rest on an unproved assumption, namely that an embedded (inherited) eigenvalue remains globally dominant within its own stratum, and the monotonicity conclusion was downgraded to conditional.
+
+This note resolves the question. The missing structural fact is that the pullback along the reduction map is not merely an invariant-subspace embedding but splits the operator as an honest orthogonal direct sum. This upgrades the available inequality to an exact formula, from which monotonicity follows by a short, elementary argument (Theorem~\ref{thm:mono}). We also locate precisely the one arithmetic hypothesis the construction needs (Section~\ref{sec:arith}), determine exactly at which levels it holds for every prime, and exhibit a concrete prime where it fails.
+
+In the language of the Closure--Separation--Stability audit protocol for reduced representations~\cite{DJ-css}, the reduction $\pi_e$ is a coarse-graining of the residue state space. Theorem~\ref{thm:split} says that this coarse-graining is exact in a strong sense: the coarse observables close under the dynamics (the level-$e$ operator is recovered exactly), and the information discarded by the reduction separates into its own invariant sector rather than leaking back into the coarse one.
 
 \section{The operator family}
 
-\begin{definition}[Affine-cocycle transfer operator]\label{def:operator}
-Fix a prime $p$ and coprime integers $a,b\ge2$ with $p\nmid ab$. For $e\ge1$, let $q=p^e$ and $K_e=\langle a,b\rangle\le(\mathbb Z/q\mathbb Z)^\times$, a cyclic group (every subgroup of $(\mathbb Z/p^e\mathbb Z)^\times$ is cyclic for odd $p$). Let $r_e=\mathrm{ord}_q(b)$. For $t\in\mathbb Z/q\mathbb Z$ and $x$ in the open unit disk, define $\mathcal L_{e,t,x}:\mathcal H_e\to\mathcal H_e$ on $\mathcal H_e:=\mathbb C^{K_e}$ by
+\begin{definition}[Affine-cocycle transfer operator]\label{def:op}
+Fix an odd prime $p$ and coprime integers $a,b\ge2$ with $p\nmid ab$. For $e\ge1$, let $q=p^e$ and $K_e=\langle a,b\rangle\le(\Z/q\Z)^\times$, a cyclic group (every subgroup of $(\Z/p^e\Z)^\times$ is cyclic for odd $p$~\cite{IrelandRosen}). Let $r_e=\ord_q(b)$. For $t\in\Z/q\Z$ and $x$ in the open unit disk, define $L_{e,t,x}:H_e\to H_e$ on $H_e:=\C^{K_e}$ by
 \[
-(\mathcal L_{e,t,x}f)(u')=\sum_{u\in K_e}e_q(tu)\,\frac{x^{d_0(u,u')}}{1-x^{r_e}}\,f(u),
+(L_{e,t,x}f)(u')=\sum_{u\in K_e} e_q(tu)\,\frac{x^{d_0(u,u')}}{1-x^{r_e}}\,f(u),
 \]
-where $e_q(y)=\exp(2\pi iy/q)$ and $d_0(u,u')\in[1,r_e]$ is the least $d$ with $u'=u\cdot b^d\cdot a^{-1}\bmod q$. The Collatz instance is $(a,b)=(3,2)$, with $K_e=\langle2,3\rangle$ the reachable states of the multiplicative walk $u_{j+1}=u_jb^{D_j}a^{-1}$ underlying $C_L(D)\bmod q$ \cite{equidist}, and the relevant evaluation point is the saddle $x_*=1-1/\log_2b$ (for $(a,b)=(3,2)$: $x_*=1-1/\log_23$), at which $\rho(\mathcal L_{e,0,x_*})=\log_2b-1$ exactly, independent of $p,e$ \cite{equidist}.
+where $e_q(y)=\exp(2\pi i y/q)$ and $d_0(u,u')\in[1,r_e]$ is the least $d$ with $u'\equiv u\,b^d a^{-1}\pmod q$ (the entry is $0$ if no such $d$ exists).
 \end{definition}
 
-We fix the normalized inner product $\langle f,g\rangle_e:=\frac1{|K_e|}\sum_{u\in K_e}f(u)\overline{g(u)}$ throughout (uniform probability measure on $K_e$), the unique normalization making the resolution maps below isometric.
+The Collatz instance is $(a,b)=(3,2)$, with $K_e=\langle 2,3\rangle$ the reachable states of the multiplicative walk $u_{j+1}=u_j b^{D_j}a^{-1}$ underlying $C_L(D)\bmod q$~\cite{DJ-fixedprime}. The relevant evaluation point is the saddle $x_*=1-1/\log_2 b$ (for $(a,b)=(3,2)$: $x_*=1-1/\log_2 3$). At $t=0$ every column of the matrix sums to $\sum_{d=1}^{r_e}x^d/(1-x^{r_e})=x/(1-x)$, so $\rho(L_{e,0,x_*})=\log_2 b-1$ exactly, independent of $p$ and $e$~\cite{DJ-fixedprime}.
 
-\begin{definition}[Resolution map]
-$\pi_e:K_{e+1}\twoheadrightarrow K_e$ is reduction mod $p^e$, restricted to $K_{e+1}$; this is a surjective group homomorphism with constant fiber size $m:=|K_{e+1}|/|K_e|$. $J_e:\mathcal H_e\to\mathcal H_{e+1}$, $J_ef:=f\circ\pi_e$ (pullback); $S_e:\mathcal H_{e+1}\to\mathcal H_e$, $(S_ef)(\bar u):=\sum_{u\in\pi_e^{-1}(\bar u)}f(u)$ (fiber-sum).
+We fix the normalized inner product $\langle f,g\rangle_e:=\frac{1}{|K_e|}\sum_{u\in K_e}f(u)\overline{g(u)}$ throughout (uniform probability measure on $K_e$), the normalization making the resolution maps below isometric.
+
+\begin{definition}[Resolution maps]
+$\pi_e:K_{e+1}\twoheadrightarrow K_e$ is reduction mod $p^e$, restricted to $K_{e+1}$; it is a surjective group homomorphism with constant fiber size $m:=|K_{e+1}|/|K_e|\in\{1,p\}$. Define
+\begin{align*}
+J_e&:H_e\to H_{e+1}, & J_ef&:=f\circ\pi_e && (\text{pullback}),\\
+S_e&:H_{e+1}\to H_e, & (S_ef)(\bar u)&:=\textstyle\sum_{u\in\pi_e^{-1}(\bar u)}f(u) && (\text{fiber sum}).
+\end{align*}
 \end{definition}
 
-A direct computation shows $J_e$ is injective and, with the normalization above, an exact isometry; $S_e\circ J_e=m\cdot\mathrm{id}$.
+A direct computation shows that $J_e$ is injective and, with the normalization above, an exact isometry, and that $S_e\circ J_e=m\cdot\mathrm{id}$.
 
 \section{Intertwining and the splitting theorem}
 
 \begin{theorem}[Pullback intertwining]\label{thm:intertwine}
-Suppose \textbf{(H1)}: $r_{e+1}=p\cdot r_e$. Then for every $t\in\mathbb Z/p^e\mathbb Z$,
+Suppose \textup{(H1)}: $r_{e+1}=p\,r_e$. Then for every $t\in\Z/p^e\Z$,
 \[
-\mathcal L_{e+1,pt,x}\,J_e = J_e\,\mathcal L_{e,t,x}.
+L_{e+1,pt,x}\,J_e=J_e\,L_{e,t,x}.
 \]
 \end{theorem}
 
 \begin{proof}
-Fix source $u\in K_{e+1}$, target class $\bar u'\in K_e$. The valid increments $d$ taking $u$ to some $u'\in\pi_e^{-1}(\bar u')$ are exactly $\{d_0^{(0)}+k r_e : k=0,\ldots,p-1\}$, where $d_0^{(0)}\in[1,r_e]$ solves the coarser congruence at level $e$ (using (H1) to know this set has exactly $p=m$ elements inside $[1,r_{e+1}]$); the phase $e_{p^{e+1}}(ptu)=e_{p^e}(t\bar u)$ is constant on the fiber. Summing:
+Under (H1) the subgroup $\langle b\rangle$ grows by a factor $p$, so $m=p$. Fix a target $u'\in K_{e+1}$ and a source class $\bar u\in K_e$. A source $u\in\pi_e^{-1}(\bar u)$ is joined to $u'$ by an increment $d\in[1,r_{e+1}]$ exactly when $u=u'ab^{-d}$, and $u'ab^{-d}$ lies over $\bar u$ exactly when $d\equiv d_0(\bar u,\pi_e u')\pmod{r_e}$. Hence the admissible increments are $d_0+kr_e$, $k=0,\dots,p-1$ (here (H1) guarantees that these are exactly $p=m$ values in $[1,r_{e+1}]$, giving $p$ distinct sources, i.e.\ the whole fiber). The phase $e_{p^{e+1}}(ptu)=e_{p^e}(t\bar u)$ is constant on the fiber. Summing,
 \[
-\sum_{u'\in\pi_e^{-1}(\bar u')}(M_{pt}(x))_{u',u}=e_{p^e}(t\bar u)\sum_{k=0}^{p-1}\frac{x^{d_0^{(0)}+kr_e}}{1-x^{r_{e+1}}}=e_{p^e}(t\bar u)\frac{x^{d_0^{(0)}}(1-x^{pr_e})}{(1-x^{r_e})(1-x^{r_{e+1}})}=e_{p^e}(t\bar u)\frac{x^{d_0^{(0)}}}{1-x^{r_e}},
+\sum_{u\in\pi_e^{-1}(\bar u)}\big(M_{pt}(x)\big)_{u',u}
+= e_{p^e}(t\bar u)\sum_{k=0}^{p-1}\frac{x^{d_0+kr_e}}{1-x^{r_{e+1}}}
+= e_{p^e}(t\bar u)\,\frac{x^{d_0}(1-x^{pr_e})}{(1-x^{r_e})(1-x^{r_{e+1}})}
+= e_{p^e}(t\bar u)\,\frac{x^{d_0}}{1-x^{r_e}},
 \]
-using $r_{e+1}=pr_e$ in the last step — exactly $(M_t(x))_{\bar u',\bar u}$. Summing against any $f$ constant on fibers gives the claim.
+using $r_{e+1}=pr_e$ in the last step; this is exactly $(M_t(x))_{\pi_eu',\bar u}$. Applying both sides to a function constant on fibers gives the claim.
 \end{proof}
 
 \begin{remark}
-The proof never used $\gcd(t,p)=1$; it lifts \emph{any} residue $t$ at the lower level by one factor of $p$, not only ``primitive'' ones.
+The proof never uses $\gcd(t,p)=1$; it lifts any residue $t$ at the lower level by one factor of $p$, not only primitive ones.
 \end{remark}
 
-\begin{lemma}[Pushforward intertwining]\label{lem:pushforward}
-Under (H1), $S_e\circ\mathcal L_{e+1,pt,x}=\mathcal L_{e,t,x}\circ S_e$.
+\begin{lemma}[Pushforward intertwining]\label{lem:push}
+Under \textup{(H1)}, $S_e\circ L_{e+1,pt,x}=L_{e,t,x}\circ S_e$.
 \end{lemma}
 
 \begin{proof}
-Identical computation, read for the fiber-sum of the \emph{output} index against a fixed, arbitrary source: $(S_e\mathcal L_{e+1}f)(\bar u')=\sum_u f(u)\sum_{u'\in\pi_e^{-1}(\bar u')}(M_{pt})_{u',u}=\sum_u f(u)\,(M_t)_{\bar u',\pi_e(u)}=\sum_{\bar u}(M_t)_{\bar u',\bar u}\sum_{u\in\pi_e^{-1}(\bar u)}f(u)=(\mathcal L_eS_ef)(\bar u')$.
+The same geometric-series computation, now with the source $u\in K_{e+1}$ fixed and the sum taken over targets $u'\in\pi_e^{-1}(\bar u')$, gives $\sum_{u'\in\pi_e^{-1}(\bar u')}(M_{pt})_{u',u}=(M_t)_{\bar u',\pi_e u}$. Therefore
+\[
+(S_eL_{e+1}f)(\bar u')=\sum_{u}f(u)\sum_{u'\in\pi_e^{-1}(\bar u')}(M_{pt})_{u',u}
+=\sum_{\bar u}(M_t)_{\bar u',\bar u}\sum_{u\in\pi_e^{-1}(\bar u)}f(u)=(L_eS_ef)(\bar u').\qedhere
+\]
 \end{proof}
 
 \begin{theorem}[Splitting]\label{thm:split}
-Under (H1), $Z_{e+1}:=\ker(S_e)$ satisfies:
+Under \textup{(H1)}, $Z_{e+1}:=\ker S_e$ satisfies:
 \begin{enumerate}
-\item $Z_{e+1}=J_e(\mathcal H_e)^\perp$ exactly;
-\item $Z_{e+1}$ is invariant under $\mathcal L_{e+1,pt,x}$;
-\item $\mathcal H_{e+1}=J_e(\mathcal H_e)\oplus Z_{e+1}$ is an orthogonal direct sum of two $\mathcal L_{e+1,pt,x}$-invariant subspaces, and in an orthonormal basis respecting this sum,
+\item $Z_{e+1}=J_e(H_e)^\perp$ exactly;
+\item $Z_{e+1}$ is invariant under $L_{e+1,pt,x}$;
+\item $H_{e+1}=J_e(H_e)\oplus Z_{e+1}$ is an orthogonal direct sum of two $L_{e+1,pt,x}$-invariant subspaces, and in an orthonormal basis respecting this sum,
 \[
-\mathcal L_{e+1,pt,x}\ \cong\ \mathcal L_{e,t,x}\ \oplus\ \mathcal N_{e+1,pt,x},\qquad \mathcal N_{e+1,pt,x}:=\mathcal L_{e+1,pt,x}\big|_{Z_{e+1}}.
+L_{e+1,pt,x}\cong L_{e,t,x}\oplus N_{e+1,pt,x},\qquad N_{e+1,pt,x}:=L_{e+1,pt,x}\big|_{Z_{e+1}}.
 \]
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-(1): $\langle h,J_e\bar g\rangle_{e+1}=0$ for all $\bar g$ iff $\sum_{u\in\pi_e^{-1}(\bar u)}h(u)=0$ for every $\bar u$, i.e. $S_eh=0$. (2): if $S_ef=0$ then $S_e(\mathcal L_{e+1}f)=\mathcal L_e(S_ef)=0$ by Lemma~\ref{lem:pushforward}. (3) is immediate from (1)+(2): two orthogonal, each-invariant subspaces summing to the whole space give an exactly block-diagonal matrix in any adapted orthonormal basis.
+(1) $\langle h,J_e\bar g\rangle_{e+1}=0$ for all $\bar g$ iff $\sum_{u\in\pi_e^{-1}(\bar u)}h(u)=0$ for every $\bar u$, i.e.\ $S_eh=0$.
+(2) If $S_ef=0$ then $S_e(L_{e+1}f)=L_e(S_ef)=0$ by Lemma~\ref{lem:push}.
+(3) Immediate from (1), (2) and Theorem~\ref{thm:intertwine}: two orthogonal subspaces, each invariant and summing to the whole space, give an exactly block-diagonal matrix in any adapted orthonormal basis. Since $J_e$ is an isometry, the block on $J_e(H_e)$ is unitarily equivalent to $L_{e,t,x}$.
 \end{proof}
 
-This is strictly stronger than the invariant-subspace statement alone (Theorem~\ref{thm:intertwine} gives only block-upper-triangularity, for which the complementary block need not be invariant under the adjoint). Theorem~\ref{thm:split} was verified independently by exact symbolic computation for $p=5,13$ (Section~\ref{sec:verification}), including for \emph{non-primitive} source residues $t$, confirming the theorem's generality beyond the primitive case.
+This is strictly stronger than the invariant-subspace statement alone: Theorem~\ref{thm:intertwine} by itself gives only block-upper-triangularity, for which the complementary block need not be invariant. The operators here are not normal, so the invariance of $Z_{e+1}$ is genuinely additional information, supplied by Lemma~\ref{lem:push} (equivalently, $J_e(H_e)$ is invariant under the adjoint as well). Theorem~\ref{thm:split} was verified independently by exact symbolic computation for $p=5,13$ (Section~\ref{sec:numerics}), including for non-primitive source residues $t$.
 
-\begin{corollary}\label{cor:eigenvalues}
-$\mathrm{Spec}(\mathcal L_{e+1,pt,x})=\mathrm{Spec}(\mathcal L_{e,t,x})\sqcup\mathrm{Spec}(\mathcal N_{e+1,pt,x})$ (multiset union, full Jordan structure inherited), and
+\begin{corollary}\label{cor:spec}
+$\Spec(L_{e+1,pt,x})=\Spec(L_{e,t,x})\sqcup\Spec(N_{e+1,pt,x})$ (multiset union, with full Jordan structure inherited), and
 \[
-\rho(\mathcal L_{e+1,pt,x})=\max\big(\rho(\mathcal L_{e,t,x}),\ \rho(\mathcal N_{e+1,pt,x})\big)\qquad\text{exactly.}
+\rho(L_{e+1,pt,x})=\max\big\{\rho(L_{e,t,x}),\,\rho(N_{e+1,pt,x})\big\}\quad\text{exactly}.
 \]
 \end{corollary}
 
-\begin{corollary}\label{cor:singvals}
-The full singular-value spectrum of $\mathcal L_{e+1,pt,x}$ is exactly the union of the singular-value spectra of $\mathcal L_{e,t,x}$ and $\mathcal N_{e+1,pt,x}$ (since the adjoint is block-diagonal in the same orthonormal basis).
+\begin{corollary}\label{cor:sv}
+The singular-value spectrum of $L_{e+1,pt,x}$ is exactly the union of the singular-value spectra of $L_{e,t,x}$ and $N_{e+1,pt,x}$, since the adjoint is block-diagonal in the same orthonormal basis.
 \end{corollary}
 
 \section{Monotonicity}
 
-Write $B_p(e):=\max_{t\ne0}\rho(\mathcal L_{e,t,x_*})$, $g_0(p,e):=1-B_p(e)/\lambda_0$ ($\lambda_0=\rho(\mathcal L_{e,0,x_*})$, constant in $e$).
+Write $B_p(e):=\max_{t\ne0}\rho(L_{e,t,x_*})$ and $g_0(p,e):=1-B_p(e)/\lambda_0$, where $\lambda_0=\rho(L_{e,0,x_*})$ is constant in $e$.
 
-\begin{theorem}[Monotonicity]\label{thm:monotone}
-Suppose (H1) holds at the step $e\to e+1$. Then $B_p(e+1)\ge B_p(e)$, hence $g_0(p,e+1)\le g_0(p,e)$.
+\begin{theorem}[Monotonicity]\label{thm:mono}
+Suppose \textup{(H1)} holds at the step $e\to e+1$. Then $B_p(e+1)\ge B_p(e)$, hence $g_0(p,e+1)\le g_0(p,e)$.
 \end{theorem}
 
 \begin{proof}
-Let $t_\star$ achieve $B_p(e)=\rho(\mathcal L_{e,t_\star,x_*})$ (exists, finite set; $t_\star$ need not be primitive). By Corollary~\ref{cor:eigenvalues} applied to the lift $pt_\star$: $\rho(\mathcal L_{e+1,pt_\star,x_*})=\max(B_p(e),\rho(\mathcal N_{e+1,pt_\star,x_*}))\ge B_p(e)$. Since $B_p(e+1)$ is a maximum over all nonzero residues including $pt_\star$: $B_p(e+1)\ge\rho(\mathcal L_{e+1,pt_\star,x_*})\ge B_p(e)$.
+Let $t_\star$ achieve $B_p(e)=\rho(L_{e,t_\star,x_*})$ (it exists, the set being finite; $t_\star$ need not be primitive). Since $t_\star\not\equiv0\pmod{p^e}$, the lift $pt_\star$ is nonzero mod $p^{e+1}$. By Corollary~\ref{cor:spec},
+$\rho(L_{e+1,pt_\star,x_*})=\max\{B_p(e),\rho(N_{e+1,pt_\star,x_*})\}\ge B_p(e)$. Since $B_p(e+1)$ is a maximum over all nonzero residues, including $pt_\star$, we get $B_p(e+1)\ge B_p(e)$.
 \end{proof}
 
-\begin{corollary}
-$g_0(p,\cdot)$ is a non-increasing, nonnegative sequence (nonnegativity: $\rho(\mathcal L_{e,t,x_*})\le\rho(\mathcal L_{e,0,x_*})=\lambda_0$ for every $t$, since $|M_t|=M_0$ entrywise), hence convergent.
+\begin{corollary}\label{cor:conv}
+On any range of levels where \textup{(H1)} holds at every step, $g_0(p,\cdot)$ is a non-increasing, nonnegative sequence, hence convergent. Nonnegativity: $\rho(L_{e,t,x_*})\le\rho(L_{e,0,x_*})=\lambda_0$ for every $t$, since $|M_t|=M_0$ entrywise. By Proposition~\ref{prop:lte} below, this range always contains all $e\ge w_p(b)$, so $\lim_{e\to\infty}g_0(p,e)$ exists for every admissible $p$.
 \end{corollary}
 
 \begin{remark}
-This does not determine the limit. Two logically separate questions remain open: whether only finitely many levels $e$ set a new record for $B_p$ (equivalently, whether the limit is reached at some finite level), and whether the limit is strictly less than $\lambda_0$ (``mixing survives'') or equal to it (``$g_0\to0$''). Theorem~\ref{thm:monotone} answers neither; it only establishes that the sequence is monotone and therefore has \emph{some} limit.
+This does not determine the limit. Two logically separate questions remain open: whether only finitely many levels $e$ set a new record for $B_p$ (equivalently, whether the limit is attained at a finite level), and whether the limit is strictly less than $\lambda_0$ (mixing survives) or equal to it ($g_0\to0$). Theorem~\ref{thm:mono} answers neither; it establishes only that the sequence is eventually monotone and therefore has a limit.
 \end{remark}
 
-The proof of Theorem~\ref{thm:monotone} isolates exactly what remains open:
+The proof of Theorem~\ref{thm:mono} isolates exactly what remains open:
 
-\begin{openproblem}[Stratum-local dominance]\label{op:dominance}
-For a non-primitive $t$ (writing $t=pt'$), is $\rho(\mathcal N_{e+1,pt',x_*})\le\rho(\mathcal L_{e,t',x_*})$, i.e. does the new sector ever exceed its \emph{own} inherited value? This is not needed for Theorem~\ref{thm:monotone} (which only requires one safe witness, the lift of the historical maximizer), but it is the natural finer question about the tower's internal structure, and is not resolved here.
+\begin{openproblem}[Stratum-local dominance]\label{op:local}
+For a non-primitive $t$ (writing $t=pt'$), is
+\[\rho(N_{e+1,pt',x_*})\le\rho(L_{e,t',x_*}),\]
+i.e.\ does the new sector ever exceed its own inherited value? This is not needed for Theorem~\ref{thm:mono}, which requires only one safe witness (the lift of the historical maximizer), but it is the natural finer question about the internal structure of the tower, and it is not resolved here.
 \end{openproblem}
 
-\section{Explicit model for the new sector}\label{sec:explicit}
+\section{Explicit model for the new sector}
 
-$Z_{e+1}=\ker(S_e)$ is concretely the space of functions on $K_{e+1}$ with zero sum on every fiber of $\pi_e$. Since $K_{e+1}$ is cyclic, fixing a generator $g$ gives a canonical character basis $\chi_k$ ($k=0,\ldots,|K_{e+1}|-1$, via discrete log); $J_e(\mathcal H_e)$ corresponds exactly to the $\chi_k$ trivial on $\ker\pi_e$, and $Z_{e+1}$ to the remaining ones. When $K_{e+1}$ is the full unit group (``index 1'' primes), this coincides with the classical characters of exact conductor $p^{e+1}$; when $K_{e+1}$ is a proper subgroup, the identification with classical primitive Dirichlet characters is not automatic and is not claimed. The $\chi_k$ diagonalize $\mathcal L_{e+1,0,x}$ (a circulant in this basis) but not $\mathcal L_{e+1,t,x}$ for $t\ne0$ in general; no closed form for $\mathcal N_{e+1,t,x}$'s eigenvalues at $t\ne0$ was found. $\dim\mathcal Q_{e+1}=(p-1)|K_e|$ under generic growth — a constant fraction $(p-1)/p$ of the total dimension at every step, neither vanishing nor dominating.
+$Z_{e+1}=\ker S_e$ is concretely the space of functions on $K_{e+1}$ with zero sum on every fiber of $\pi_e$. Since $K_{e+1}$ is cyclic, fixing a generator $g$ gives a canonical character basis $\chi_k$ ($k=0,\dots,|K_{e+1}|-1$, via the discrete logarithm); $J_e(H_e)$ is spanned exactly by the $\chi_k$ trivial on $\ker\pi_e$, and $Z_{e+1}$ by the remaining ones. When $K_{e+1}$ is the full unit group (primes for which $\langle a,b\rangle$ has index $1$), this coincides with the classical characters of exact conductor $p^{e+1}$; when $K_{e+1}$ is a proper subgroup, the identification with primitive Dirichlet characters is not automatic and is not claimed.
 
-\section{Arithmetic anomalies}\label{sec:anomalies}
+The untwisted operator $L_{e+1,0,x}$ is a convolution on the cyclic group $K_{e+1}$, so the $\chi_k$ diagonalize it; they do not diagonalize $L_{e+1,t,x}$ for $t\ne0$ in general, and no closed form for the eigenvalues of $N_{e+1,t,x}$ at $t\ne0$ was found. Under (H1), $\dim Z_{e+1}=(p-1)|K_e|$: a constant fraction $(p-1)/p$ of the total dimension at every step, neither vanishing nor dominating.
+
+\section{Arithmetic anomalies}\label{sec:arith}
 
 \begin{proposition}\label{prop:wieferich}
-For $p\nmid a$: $a^{p-1}\equiv1\pmod{p^2}$ iff $\mathrm{ord}_{p^2}(a)=\mathrm{ord}_p(a)$.
+For $p\nmid a$: $a^{p-1}\equiv1\pmod{p^2}$ if and only if $\ord_{p^2}(a)=\ord_p(a)$.
 \end{proposition}
+
 \begin{proof}
-$\mathrm{ord}_{p^2}(a)\in\{\mathrm{ord}_p(a),\,p\cdot\mathrm{ord}_p(a)\}$ always (standard order-lifting for prime powers); $\mathrm{ord}_p(a)\mid p-1$ (Fermat) while $p\cdot\mathrm{ord}_p(a)\ge p>p-1$ cannot divide $p-1$. So $a^{p-1}\equiv1\pmod{p^2}\iff\mathrm{ord}_{p^2}(a)\mid p-1\iff\mathrm{ord}_{p^2}(a)=\mathrm{ord}_p(a)$.
+$\ord_{p^2}(a)\in\{\ord_p(a),\,p\cdot\ord_p(a)\}$ always (standard order lifting for prime powers~\cite{IrelandRosen}). Now $\ord_p(a)\mid p-1$ by Fermat, while $p\cdot\ord_p(a)\ge p>p-1$ cannot divide $p-1$. So $a^{p-1}\equiv1\pmod{p^2}\iff\ord_{p^2}(a)\mid p-1\iff\ord_{p^2}(a)=\ord_p(a)$.
 \end{proof}
 
-\textbf{$p=11$ (Wieferich base $3$):} $3^{10}\equiv1\pmod{121}$, verified directly; one of exactly two known such primes ($11$, $1006003$). Direct order computation confirms $\mathrm{ord}_{11}(2)=10$ lifts generically ($\times11$) at every level tested, so \textbf{(H1) holds throughout for $p=11$} — Theorems~\ref{thm:split}--\ref{thm:monotone} apply unconditionally, and the previously-observed three-level transient in $P_{11}(e)$ before freezing is consistent with, and now known to sit inside, a provably monotone sequence. The Wieferich-$3$ anomaly affects the \emph{primitive}-stratum operator's internal structure (there being no inherited part there to split against) and remains the reason for the specific numerical values of $P_{11}(e)$ — but it does not interact with the splitting mechanism at all.
+The following standard consequence of the lifting-the-exponent lemma determines exactly at which steps (H1) holds.
 
-\textbf{$p=1093$ (Wieferich base $2$):} $2^{1092}\equiv1\pmod{1093^2}$, verified directly; the smallest known base-$2$ Wieferich prime. Direct computation: $\mathrm{ord}_{1093}(2)=364$, $\mathrm{ord}_{1093^2}(2)=364$ (not $364\times1093$) — \textbf{(H1) fails exactly at $e=1\to2$.} Notably, the group $K_{e+1}$ itself still grows generically ($|K_2|/|K_1|=1093$ exactly, since $3$ is not simultaneously anomalous and compensates) — but this does \emph{not} rescue Theorem~\ref{thm:intertwine}'s proof, because the geometric-series telescoping is tied specifically to $\mathrm{ord}(2)$'s own lifting, not to the group's overall size. This is a precise illustration that (H1) is the correct, minimal, and non-redundant hypothesis.
+\begin{proposition}[Where (H1) holds]\label{prop:lte}
+Let $p$ be an odd prime, $p\nmid b$, $r_1=\ord_p(b)$, and $w=w_p(b):=v_p(b^{r_1}-1)\ge1$ (equivalently $w=v_p(b^{p-1}-1)$). Then
+\[
+\ord_{p^e}(b)=\begin{cases} r_1, & e\le w,\\ r_1\,p^{\,e-w}, & e\ge w.\end{cases}
+\]
+In particular \textup{(H1)} holds at the step $e\to e+1$ if and only if $e\ge w$. For non-Wieferich primes to base $b$ ($w=1$) it holds at every step.
+\end{proposition}
 
-\section{Numerical verification}\label{sec:verification}
+\begin{proof}
+For odd $p$ and $p\mid c-1$, the lifting-the-exponent lemma gives $v_p(c^n-1)=v_p(c-1)+v_p(n)$. Since $b^n\equiv1\pmod p$ forces $r_1\mid n$, apply this with $c=b^{r_1}$: $v_p(b^{r_1n'}-1)=w+v_p(n')$. Thus $b^{r_1n'}\equiv1\pmod{p^e}$ iff $v_p(n')\ge e-w$, and the smallest such $n'$ is $p^{\max(0,e-w)}$. The equality $v_p(b^{r_1}-1)=v_p(b^{p-1}-1)$ follows from the same formula, since $(p-1)/r_1$ is prime to $p$.
+\end{proof}
 
-All verification in this note used exact symbolic (\texttt{sympy}) or high-precision numerical linear algebra on small cases, not broad numerical sweeps. Confirmed exactly: (i) $S_eM_{e+1}=M_eS_e$ and invariance of $\ker S_e$, for $p=5,13$ at $e=1\to2$, both for primitive and non-primitive lifted residues; (ii) the exact block-diagonal structure (off-diagonal blocks $<10^{-14}$ in a properly orthonormalized basis) and the resulting exact singular-value union (Corollary~\ref{cor:singvals}), matched to $10^{-8}$ across the six leading values; (iii) $\rho(\mathcal L_{\text{hi}})=\max(\rho(\mathcal L_{\text{lo}}),\rho(\mathcal N))$ exactly, for both primitive and non-primitive source residues, $p=5,13$; (iv) the Wieferich computations of Section~\ref{sec:anomalies}, by direct modular exponentiation; (v) genericity of the splitting mechanism for a non-Collatz control multiplier $(a,b)=(5,2)$ at an arbitrary (non-saddle) evaluation point, confirming the theorem's proof uses no Collatz-specific arithmetic. All scripts are included in \texttt{src/}.
+\paragraph{$p=11$ (Wieferich base 3).}
+$3^{10}\equiv1\pmod{121}$, verified directly; $11$ is one of exactly two known base-3 Wieferich primes ($11$ and $1006003$)~\cite{Montgomery1993,DoraisKlyve2011}. On the other hand $w_{11}(2)=1$, so by Proposition~\ref{prop:lte} the order of $2$ lifts generically ($\times11$) at every level, and (H1) holds throughout. Theorems~\ref{thm:intertwine}--\ref{thm:mono} therefore apply at every step for $p=11$, and the previously observed three-level transient in $P_{11}(e)$ before freezing is consistent with, and now known to sit inside, a provably monotone sequence. The base-3 anomaly affects the internal structure of the primitive-stratum operator (there being no inherited part there to split against) and is plausibly the reason for the specific numerical values of $P_{11}(e)$, but it does not interact with the splitting mechanism at all.
+
+\paragraph{$p=1093$ (Wieferich base 2).}
+$2^{1092}\equiv1\pmod{1093^2}$, verified directly; $1093$ is the smallest of the two known base-2 Wieferich primes~\cite{Wieferich1909,DoraisKlyve2011}. Direct computation gives $\ord_{1093}(2)=364$ and $\ord_{1093^2}(2)=364$ (not $364\times1093$), so (H1) fails exactly at $e=1\to2$; by Proposition~\ref{prop:lte} ($w=2$) it holds at every subsequent step (indeed $\ord_{1093^3}(2)=364\times1093$), so $g_0(1093,e)$ is non-increasing for $e\ge2$. Notably, the group $K_{e+1}$ itself still grows generically ($|K_2|/|K_1|=1093$ exactly, since $3$ is not simultaneously anomalous and compensates), but this does not rescue the proof of Theorem~\ref{thm:intertwine}, because the geometric-series telescoping is tied specifically to the lifting of $\ord(2)$, not to the overall size of the group. This illustrates that (H1) is the correct, minimal, and non-redundant hypothesis.
+
+\section{Numerical verification}\label{sec:numerics}
+
+All verification in this note used exact symbolic computation (\texttt{sympy}) or high-precision numerical linear algebra on small cases, not broad numerical sweeps. Confirmed exactly:
+(i)~$S_eM_{e+1}=M_eS_e$ and invariance of $\ker S_e$, for $p=5,13$ at $e=1\to2$, for both primitive and non-primitive lifted residues;
+(ii)~the exact block-diagonal structure (off-diagonal blocks $<10^{-14}$ in a properly orthonormalized basis) and the resulting exact singular-value union (Corollary~\ref{cor:sv}), matched to $10^{-8}$ across the six leading values;
+(iii)~$\rho(L_{\mathrm{hi}})=\max\{\rho(L_{\mathrm{lo}}),\rho(N)\}$ exactly, for both primitive and non-primitive source residues, $p=5,13$;
+(iv)~the Wieferich computations of Section~\ref{sec:arith}, by direct modular exponentiation;
+(v)~genericity of the splitting mechanism for a non-Collatz control multiplier $(a,b)=(5,2)$ at an arbitrary (non-saddle) evaluation point, confirming that the proof uses no Collatz-specific arithmetic.
+An independent re-implementation, prepared for this version, reproduced (i)--(iii) for $p=5,11,13$ with $(a,b)=(3,2)$ at $x_*$ (including the non-primitive lift $t=5$ at $e=2\to3$ for $p=5$) and (v) for $p=7,13$ with $(a,b)=(5,2)$ at $x=0.37$; all intertwining and off-diagonal residuals were below $2\times10^{-14}$ and the spectral radii agreed to ten digits. The verification scripts accompany this deposit in the \texttt{src/} directory.
 
 \section{Conclusion}
 
-The prime-power resolution tower of accelerated-Collatz-carry-sum transfer operators splits exactly, orthogonally, at every step satisfying one checkable arithmetic hypothesis. This upgrades a previously conditional monotonicity claim for the equidistribution spectral gap $g_0(p,e)$ to an unconditional theorem, and sharpens the remaining open question to a precise, stratum-local statement (Open Problem~\ref{op:dominance}) that is no longer entangled with the coarser question the research program originally posed. The theorem and its proof are generic to affine-cocycle transfer operators of this shape; the Collatz carry sum is the motivating instance, not a hypothesis of any result proved here.
+The prime-power resolution tower of accelerated-Collatz-carry-sum transfer operators splits exactly and orthogonally at every step satisfying one checkable arithmetic hypothesis, and that hypothesis holds at every step beyond the base-2 Wieferich depth $w_p(2)$ (from the first step for every non-Wieferich prime). This upgrades a previously conditional monotonicity claim for the equidistribution spectral gap $g_0(p,e)$ to a theorem, and sharpens the remaining open question to a precise, stratum-local statement (Open Problem~\ref{op:local}) that is no longer entangled with the coarser question the research program originally posed. The theorem and its proof are generic to affine-cocycle transfer operators of this shape; the Collatz carry sum is the motivating instance, not a hypothesis of any result proved here.
 
-\begin{thebibliography}{9}
-\bibitem{equidist} E. De Jesús, \textit{Fixed-Prime Equidistribution of Accelerated Collatz Carry Sums: A Transfer-Operator Spectral Gap, with Two Open Uniformity Problems}, technical note, May 2026.
-\bibitem{amgap} E. De Jesús, \textit{An Additive--Multiplicative Spectral-Gap Analyzer for the Fixed-Prime Collatz Carry-Sum Transfer Operator: Instrument, Validation Gates, and Two Exploratory Findings}, technical note, June 2026.
-\bibitem{closure} E. De Jesús, \textit{Closure, Separation, Stability: A Three-Level Audit Protocol for Reduced Representations}, methodological note, August 2026.
+\section*{AI Use Disclosure}
+AI language-model assistants, including Claude (Anthropic), were used in preparing this note: to help draft and edit the text, typeset it in \LaTeX, review the proofs, suggest standard literature references, and independently re-implement the numerical checks of Section~\ref{sec:numerics}. All mathematical statements, proofs, computations and references were checked by the author, who takes full responsibility for the content. AI systems are not listed as authors.
+
+\section*{License}
+This work is licensed under the Apache License, Version 2.0, \url{https://www.apache.org/licenses/LICENSE-2.0}.
+
+\begin{thebibliography}{99}
+
+\bibitem{DJ-fixedprime}
+E.~De Jes\'us,
+\emph{Fixed-Prime Equidistribution of Accelerated Collatz Carry Sums: A Transfer-Operator Spectral Gap, with Two Open Uniformity Problems},
+Zenodo, 2026.
+\doi{10.5281/zenodo.20694734}.
+
+\bibitem{DJ-amgap}
+E.~De Jes\'us,
+\emph{An Additive--Multiplicative Spectral-Gap Analyzer for the Fixed-Prime Collatz Carry-Sum Transfer Operator: Instrument, Validation Gates, and Two Exploratory Findings},
+technical note, Zenodo, June 2026.
+
+\bibitem{DJ-css}
+E.~De Jes\'us,
+\emph{Closure, Separation, Stability: A Three-Level Audit Protocol for Reduced Representations},
+Zenodo, 2026.
+\doi{10.5281/zenodo.21855642}.
+
+\bibitem{Baladi2000}
+V.~Baladi,
+\emph{Positive Transfer Operators and Decay of Correlations},
+Advanced Series in Nonlinear Dynamics, vol.~16, World Scientific, Singapore, 2000.
+
+\bibitem{DoraisKlyve2011}
+F.~G.~Dorais and D.~Klyve,
+A Wieferich prime search up to $6.7\times10^{15}$,
+\emph{Journal of Integer Sequences} \textbf{14} (2011), Article 11.9.2.
+
+\bibitem{IrelandRosen}
+K.~Ireland and M.~Rosen,
+\emph{A Classical Introduction to Modern Number Theory}, 2nd ed.,
+Graduate Texts in Mathematics, vol.~84, Springer, New York, 1990.
+
+\bibitem{Lagarias1985}
+J.~C.~Lagarias,
+The $3x+1$ problem and its generalizations,
+\emph{American Mathematical Monthly} \textbf{92} (1985), no.~1, 3--23.
+
+\bibitem{Lagarias2010}
+J.~C.~Lagarias (ed.),
+\emph{The Ultimate Challenge: The $3x+1$ Problem},
+American Mathematical Society, Providence, RI, 2010.
+
+\bibitem{Montgomery1993}
+P.~L.~Montgomery,
+New solutions of $a^{p-1}\equiv1\pmod{p^2}$,
+\emph{Mathematics of Computation} \textbf{61} (1993), no.~203, 361--363.
+
+\bibitem{Tao2022}
+T.~Tao,
+Almost all orbits of the Collatz map attain almost bounded values,
+\emph{Forum of Mathematics, Pi} \textbf{10} (2022), e12.
+
+\bibitem{Wieferich1909}
+A.~Wieferich,
+Zum letzten Fermat'schen Theorem,
+\emph{Journal f\"ur die reine und angewandte Mathematik} \textbf{136} (1909), 293--302.
+
 \end{thebibliography}
-
 \end{document}
