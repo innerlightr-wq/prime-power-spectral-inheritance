@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Exact Spectral Inheritance in Prime-Power Resolution Towers: A Splitting Theorem for Affine-Cocycle Transfer Operators, with Application to the Collatz Carry Sum"
+type: software
+authors:
+  - family-names: "De Jesús"
+    given-names: "Elias"
+    orcid: "https://orcid.org/0009-0007-0190-9143"
+    email: "dejesuselias10@gmail.com"
+date-released: 2026-10-01
+license: Apache-2.0
+version: "1.0.0"
+keywords:
+  - Collatz conjecture
+  - transfer operators
+  - spectral gap
+  - prime-power towers
+  - Wieferich primes
+  - equidistribution
+  - affine cocycles
+preferred-citation:
+  type: report
+  title: "Exact Spectral Inheritance in Prime-Power Resolution Towers: A Splitting Theorem for Affine-Cocycle Transfer Operators, with Application to the Collatz Carry Sum"
+  authors:
+    - family-names: "De Jesús"
+      given-names: "Elias"
+      orcid: "https://orcid.org/0009-0007-0190-9143"
+  date-released: 2026-10-01
